@@ -41,7 +41,8 @@
                 <input type="text" id="prod-desc" placeholder="Description" required>
                 <input type="number" id="prod-price" placeholder="Price (Rp)" required>
                 <input type="number" id="prod-stock" placeholder="Stock" required>
-                <input type="text" id="prod-img" placeholder="Image URL">
+                <input type="hidden" id="prod-old-img">
+                <input type="file" id="prod-img" accept="image/*">
                 <button type="submit" class="btn-primary" id="save-prod-btn">Add Product</button>
                 <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Cancel Edit</button>
             </form>

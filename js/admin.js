@@ -78,24 +78,39 @@ productForm.addEventListener('submit', async (e) => {
     const desc = document.getElementById('prod-desc').value;
     const price = document.getElementById('prod-price').value;
     const stock = document.getElementById('prod-stock').value;
-    const img = document.getElementById('prod-img').value || 'https://via.placeholder.com/150';
+    const fileInput = document.getElementById('prod-img');
+    let img = 'https://via.placeholder.com/150';
 
-    const payload = { name, description: desc, price, stock, image_url: img };
-    const method = id ? 'PUT' : 'POST';
-    const url = id ? `${BASE_URL}/products/${id}` : `${BASE_URL}/products`;
+    const saveProduct = async (image_url) => {
+        const payload = { name, description: desc, price, stock, image_url };
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `${BASE_URL}/products/${id}` : `${BASE_URL}/products`;
 
-    try {
-        await fetch(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        resetForm();
-        fetchAdminProducts();
-        alert(id ? 'Product updated' : 'Product added');
-    } catch (err) {
-        alert('Failed to save product');
-        console.error(err);
+        try {
+            document.getElementById('save-prod-btn').innerText = 'Saving...';
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            resetForm();
+            fetchAdminProducts();
+            alert(id ? 'Product updated' : 'Product added');
+        } catch (err) {
+            alert('Failed to save product');
+            console.error(err);
+        } finally {
+            document.getElementById('save-prod-btn').innerText = id ? 'Update Product' : 'Add Product';
+        }
+    };
+
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => saveProduct(e.target.result);
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        const oldImg = document.getElementById('prod-old-img').value;
+        saveProduct(oldImg || 'https://via.placeholder.com/150');
     }
 });
 
@@ -106,7 +121,8 @@ window.editProduct = (id, name, desc, price, stock, img) => {
     document.getElementById('prod-desc').value = desc;
     document.getElementById('prod-price').value = price;
     document.getElementById('prod-stock').value = stock;
-    document.getElementById('prod-img').value = img;
+    document.getElementById('prod-old-img').value = img;
+    document.getElementById('prod-img').value = '';
     
     document.getElementById('save-prod-btn').innerText = 'Update Product';
     document.getElementById('cancel-edit-btn').classList.remove('hidden');
@@ -119,6 +135,7 @@ document.getElementById('cancel-edit-btn').addEventListener('click', resetForm);
 function resetForm() {
     productForm.reset();
     document.getElementById('prod-id').value = '';
+    document.getElementById('prod-old-img').value = '';
     document.getElementById('save-prod-btn').innerText = 'Add Product';
     document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
