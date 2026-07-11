@@ -1,83 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - UAS</title>
+    <title>Admin Dashboard - Damayani Store</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+        }
+        .admin-form input[type="text"],
+        .admin-form input[type="number"],
+        .admin-form input[type="file"] {
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .admin-form input:focus { border-color: #6366f1; outline: none; }
+        .admin-form .full-span { grid-column: 1 / -1; }
+        .img-preview-wrap { grid-column: 1 / -1; }
+        #img-preview {
+            display: none;
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            object-fit: cover;
+            margin-top: 0.4rem;
+        }
+        .file-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            grid-column: 1 / -1;
+        }
+        .file-label span {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 0.8rem;
+        }
+        .admin-table img { border-radius: 6px; }
+    </style>
 </head>
 <body class="admin-body">
     <header class="navbar admin-nav">
-        <div class="logo">Admin Dashboard</div>
+        <div class="logo">🛒 Admin Dashboard</div>
         <nav>
-            <a href="../index.html">View Store</a>
+            <a href="../index.html" target="_blank">Lihat Store</a>
         </nav>
     </header>
 
-    <!-- Simple Login Overlay -->
+    <!-- Login Overlay -->
     <div id="login-overlay" class="login-overlay">
         <div class="login-box">
             <h2>Admin Login</h2>
             <input type="email" id="login-email" placeholder="Email" value="admin@admin.com">
             <input type="password" id="login-pass" placeholder="Password" value="password123">
             <button id="login-btn" class="btn-primary">Login</button>
-            <p id="login-error" style="color:red; display:none;">Invalid credentials</p>
-            <p class="hint">Use: admin@admin.com / password123</p>
+            <p id="login-error" style="color:red; display:none; margin-top:0.5rem;">Email atau password salah!</p>
+            <p class="hint">Gunakan: admin@admin.com / password123</p>
         </div>
     </div>
 
     <main id="admin-main" class="admin-main hidden">
         <div class="admin-tabs">
-            <button class="tab-btn active" data-target="products-tab">Manage Products</button>
-            <button class="tab-btn" data-target="orders-tab">View Orders</button>
+            <button class="tab-btn active" data-target="products-tab">Kelola Produk</button>
+            <button class="tab-btn" data-target="orders-tab">Lihat Pesanan</button>
         </div>
 
-        <section id="products-tab" class="tab-content active">
-            <h2>Products Management</h2>
+        <!-- Products Tab -->
+        <section id="products-tab" class="tab-content">
+            <h2>Manajemen Produk</h2>
+
             <form id="product-form" class="admin-form">
                 <input type="hidden" id="prod-id">
-                <input type="text" id="prod-name" placeholder="Product Name" required>
-                <input type="text" id="prod-desc" placeholder="Description" required>
-                <input type="number" id="prod-price" placeholder="Price (Rp)" required>
-                <input type="number" id="prod-stock" placeholder="Stock" required>
                 <input type="hidden" id="prod-old-img">
-                <input type="file" id="prod-img" accept="image/*">
-                <button type="submit" class="btn-primary" id="save-prod-btn">Add Product</button>
-                <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Cancel Edit</button>
+
+                <input type="text" id="prod-name" placeholder="Nama Produk" required class="full-span">
+                <input type="text" id="prod-desc" placeholder="Deskripsi Produk">
+                <input type="number" id="prod-price" placeholder="Harga (Rp)" required min="0">
+                <input type="number" id="prod-stock" placeholder="Stok" required min="0">
+
+                <div class="file-label full-span">
+                    <span>📷 Upload Foto Produk</span>
+                    <input type="file" id="prod-img" accept="image/*">
+                </div>
+
+                <div class="img-preview-wrap">
+                    <img id="img-preview" src="" alt="Preview Foto">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="save-prod-btn">➕ Tambah Produk</button>
+                    <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Batal</button>
+                </div>
             </form>
 
             <table class="admin-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
+                        <th>Foto</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="admin-products-list">
-                    <tr><td colspan="5">Loading products...</td></tr>
+                    <tr><td colspan="6" style="text-align:center; padding:1rem;">Memuat produk...</td></tr>
                 </tbody>
             </table>
         </section>
 
+        <!-- Orders Tab -->
         <section id="orders-tab" class="tab-content hidden">
-            <h2>Orders Management</h2>
+            <h2>Manajemen Pesanan</h2>
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Phone</th>
+                        <th>ID Pesanan</th>
+                        <th>Pelanggan</th>
+                        <th>No. HP</th>
                         <th>Total</th>
-                        <th>Date</th>
-                        <th>Items</th>
+                        <th>Tanggal</th>
+                        <th>Item</th>
                     </tr>
                 </thead>
                 <tbody id="admin-orders-list">
-                    <tr><td colspan="6">Loading orders...</td></tr>
+                    <tr><td colspan="6" style="text-align:center; padding:1rem;">Memuat pesanan...</td></tr>
                 </tbody>
             </table>
         </section>
