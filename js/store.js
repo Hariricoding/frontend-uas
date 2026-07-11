@@ -1,4 +1,4 @@
-const BASE_URL = 'https://damayanistore22-production.up.railway.app/api';
+const BASE_URL = 'https://uas-backend-production-7efa.up.railway.app/api';
 
 let products = [];
 let cart = [];
