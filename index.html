@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAS Online Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">TechStore UAS</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="admin/index.html">Admin</a>
+            <button id="cart-btn">Cart (<span id="cart-count">0</span>)</button>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <h1>Welcome to TechStore</h1>
+        <p>Your one-stop shop for premium tech products.</p>
+    </main>
+
+    <section class="products-section">
+        <h2>Our Products</h2>
+        <div id="products-grid" class="products-grid">
+            <!-- Products will be loaded here dynamically -->
+            <p>Loading products...</p>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                <h3>Total: Rp <span id="cart-total-price">0</span></h3>
+            </div>
+            
+            <div class="checkout-form">
+                <h3>Checkout Details</h3>
+                <input type="text" id="cust-name" placeholder="Full Name" required>
+                <input type="text" id="cust-phone" placeholder="Phone (e.g. 628...)" required>
+                <button id="checkout-btn" class="btn-primary">Checkout via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/store.js"></script>
+</body>
+</html>

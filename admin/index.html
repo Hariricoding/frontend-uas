@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - UAS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <header class="navbar admin-nav">
+        <div class="logo">Admin Dashboard</div>
+        <nav>
+            <a href="../index.html">View Store</a>
+        </nav>
+    </header>
+
+    <!-- Simple Login Overlay -->
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <input type="email" id="login-email" placeholder="Email" value="admin@admin.com">
+            <input type="password" id="login-pass" placeholder="Password" value="password123">
+            <button id="login-btn" class="btn-primary">Login</button>
+            <p id="login-error" style="color:red; display:none;">Invalid credentials</p>
+            <p class="hint">Use: admin@admin.com / password123</p>
+        </div>
+    </div>
+
+    <main id="admin-main" class="admin-main hidden">
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-target="products-tab">Manage Products</button>
+            <button class="tab-btn" data-target="orders-tab">View Orders</button>
+        </div>
+
+        <section id="products-tab" class="tab-content active">
+            <h2>Products Management</h2>
+            <form id="product-form" class="admin-form">
+                <input type="hidden" id="prod-id">
+                <input type="text" id="prod-name" placeholder="Product Name" required>
+                <input type="text" id="prod-desc" placeholder="Description" required>
+                <input type="number" id="prod-price" placeholder="Price (Rp)" required>
+                <input type="number" id="prod-stock" placeholder="Stock" required>
+                <input type="text" id="prod-img" placeholder="Image URL">
+                <button type="submit" class="btn-primary" id="save-prod-btn">Add Product</button>
+                <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Cancel Edit</button>
+            </form>
+
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-products-list">
+                    <tr><td colspan="5">Loading products...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="orders-tab" class="tab-content hidden">
+            <h2>Orders Management</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-orders-list">
+                    <tr><td colspan="6">Loading orders...</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>
