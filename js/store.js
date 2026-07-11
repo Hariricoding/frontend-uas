@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api'; // Change to Railway URL after deployment
+const BASE_URL = 'https://damayanistore22-production.up.railway.app/api';
 
 let products = [];
 let cart = [];
